@@ -1,7 +1,7 @@
-# mqtt-message-ui
+# mqtt-connection-ui
 
 ## install
 
-`bower install sandro-k/mqtt-message-ui`
+`bower install sandro-k/mqtt-connection-ui`
 
 
