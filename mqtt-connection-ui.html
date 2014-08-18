@@ -31,7 +31,8 @@
                  constructor="MqttConnectionUi">
 <!-- outermost template defines the element's shadow DOM -->
 <template>
-<link rel="stylesheet" href="../../css/build/layout.css"/>
+
+<link rel="stylesheet" href="../mqtt-lens-style/build/layout.css"/>
 <link rel="stylesheet" href="../mqtt-lens/css/main.css"/>
 <link rel="stylesheet" href="custom.css"/>
 
@@ -592,7 +593,7 @@ Polymer('mqtt-connection-ui', {
   togglelastWillAndButton: function () {
     console.debug("togglelastWillAndButton");
     this.$.lastWillContainerCollapse.toggle();
-    this.$.togglelastWillIcon.toogle()
+    this.$.togglelastWillIcon.toggle()
   },
 
 
