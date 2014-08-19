@@ -69,6 +69,7 @@
         <input class="form-control"
                id="connectionName"
                placeholder="Eclipse MQTT"
+               autofocus
                value="{{connectionName}}">
       </div>
     </div>
@@ -82,8 +83,6 @@
   </div>
   <div class="row">
     <div class="col-sm-8">
-
-      <!--TODO(sandro-k) add tooltip -->
       <div class="form-group">
         <label for="hostnameInput">Hostname</label>
         <input class="form-control"
@@ -330,6 +329,11 @@
   </div>
 </div>
 </div>
+
+<div id="message" hidden?="{{!showMessage}}">
+  <span>Pleas enter a Connection name, a Hostname and Port to create a connection!</span>
+</div>
+
 </div>
 
 
@@ -360,6 +364,7 @@
       <!--just a spacer-->
     </div>
 
+
     <paper-button class="greenbutton" label="Save changes" icon="save" on-click="{{save}}" affirmative autofocus
                   raisedbutton></paper-button>
   </footer>
@@ -376,6 +381,8 @@
 <script>
 Polymer('mqtt-connection-ui', {
 
+
+  showMessage: false,
 
   publish: {
 
@@ -544,7 +551,7 @@ Polymer('mqtt-connection-ui', {
      * @type boolean
      * @default false
      */
-    narrow: false,
+    narrow: false
 
   },
 
@@ -583,15 +590,15 @@ Polymer('mqtt-connection-ui', {
 
   },
   randomID: function () {
-    console.debug("randomID");
+
     this.clientId = "lens_"+this.randomString(27);
   },
   togglelastWill: function () {
-    console.debug("togglelastWill");
+
     this.$.lastWillContainerCollapse.toggle();
   },
   togglelastWillAndButton: function () {
-    console.debug("togglelastWillAndButton");
+
     this.$.lastWillContainerCollapse.toggle();
     this.$.togglelastWillIcon.toggle()
   },
@@ -602,7 +609,6 @@ Polymer('mqtt-connection-ui', {
    * @param values
    */
   load: function (values) {
-//    console.log(JSON.stringify(values));
     for (var property in this.publish) {
       if (values[property]) {
         this[property] = values[property];
@@ -616,20 +622,37 @@ Polymer('mqtt-connection-ui', {
     this.asyncFire('cancelNewMqttConnection');
   },
 
+  hideMessage: function () {
+    this.showMessage = false;
+  },
+
   /**
    * Fires a `newMqttConnection` event
    */
   save: function () {
-    console.debug("%s", "save");
-    var values = {};
-    for (var property in this.publish) {
-      values[property] = this[property];
-//          console.log("%s: %s",property, this[property]);
-    }
-//        console.log(JSON.stringify(values));
 
-    this.asyncFire('newMqttConnection', values);
-    this.$.overlay.toggle();
+    if ( typeof this.connectionName != 'string'
+        || this.connectionName.length <= 1
+        || typeof this.hostname != 'string'
+        || this.hostname.length <= 1
+        || typeof this.hostPort != 'number'
+        || !(0 < this.hostPort < 65536)) {
+//      this.asyncFire('toast', {text: "Pleas enter a Connection name, a Hostname and Port to create a connection!", status: "error"});
+      this.showMessage = true;
+
+      this.myJob = this.job(this.myJob, this.hideMessage, 3000);
+
+    } else {
+      var values = {};
+      for (var property in this.publish) {
+        values[property] = this[property];
+      }
+      this.asyncFire('newMqttConnection', values);
+      this.$.overlay.toggle();
+    }
+
+
+
   },
 
   /**

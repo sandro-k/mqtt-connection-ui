@@ -62,3 +62,10 @@ footer {
 
 .greenbutton:hover {
   background: #5cb85c; }
+
+#message {
+  background: #d9534f; }
+  #message span {
+    color: #ffffff;
+    padding: 8px;
+    font-weight: bold; }
