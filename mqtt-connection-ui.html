@@ -623,12 +623,9 @@ Polymer('mqtt-connection-ui', {
   },
 
   mqttProtocolChanged: function () {
-    if (this.mqttProtocol == "tcp"){
+    if (this.mqttProtocol == "ws" && this.tcpAvailable){
       this.useWebsocketConnectionInChrome = true;
     }
-
-    console.log("this.useWebsocketConnectionInChrome: %s", this.useWebsocketConnectionInChrome);
-
   },
 
   checkForChromeAppRuntime: function () {
