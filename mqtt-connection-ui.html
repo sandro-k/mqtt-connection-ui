@@ -83,8 +83,21 @@
   </div>
   <div class="row">
     <div class="col-sm-8">
-      <div class="form-group">
+      <div class="form-group hostname-form">
+
+
         <label for="hostnameInput">Hostname</label>
+
+        <select
+            class="form-control"
+            value="{{mqttProtocol}}"
+            disabled?="{{!tcpAvailable}}">
+
+          <option value="tcp">tcp://</option>
+          <option value="ws">ws://</option>
+
+        </select>
+
         <input class="form-control"
                data-toggle="tooltip"
                id="hostnameInput"
@@ -130,7 +143,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-6 col-sm-2">
+    <div class="col-xs-6 col-sm-3">
       <div class="form-group">
         <label for="cleanSessionInput">Session</label>
 
@@ -149,24 +162,24 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-6 col-sm-2">
-      <div class="form-group">
-        <label for="useSslInput">SSL</label>
+    <!--<div class="col-xs-6 col-sm-2">-->
+      <!--<div class="form-group">-->
+        <!--<label for="useSslInput">SSL</label>-->
 
-        <div class="checkbox">
-          <label>
-            <input
-                id="useSslInput"
-                type="checkbox"
-                disabled?="{{ mode == 'edit' }}"
-                checked="{{useSSL}}">
-            Use SSL
+        <!--<div class="checkbox">-->
+          <!--<label>-->
+            <!--<input-->
+                <!--id="useSslInput"-->
+                <!--type="checkbox"-->
+                <!--disabled?="{{ mode == 'edit' }}"-->
+                <!--checked="{{useSSL}}">-->
+            <!--Use SSL-->
 
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-6 col-sm-4">
+          <!--</label>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="col-xs-6 col-sm-5">
       <div class="form-group">
         <label for="autoConnectInput">Automatic Connection</label>
 
@@ -176,10 +189,8 @@
                 id="autoConnectInput"
                 type="checkbox"
                 disabled?="{{ mode == 'edit' }}"
-                checked="{{autoConnect}}"
-                >
+                checked="{{autoConnect}}">
             Automatic Connection
-
           </label>
         </div>
       </div>
@@ -434,7 +445,7 @@ Polymer('mqtt-connection-ui', {
      * @type integer
      * @default 1883
      */
-    hostPort: 1883,
+    hostPort: 8080,
 
     /**
      * A unique client ID to identify the client at the broker
@@ -541,6 +552,24 @@ Polymer('mqtt-connection-ui', {
     host: {},
 
     /**
+     * The layer 4 protocol that the mqtt connection should use
+     *
+     * @attribute mqttProtocol
+     * @type string
+     * @default "tcp"
+     */
+    mqttProtocol: "ws",
+
+    /**
+     * A flag that indicates whether or not the chrome app runtime is available
+     *
+     * @attribute tcpAvailable
+     * @type boolean
+     * @default false
+     */
+    tcpAvailable: false,
+
+    /**
      * The media query that is evaluated to trigger narrow mode
      */
     narrowQuery: 'max-width: 680px',
@@ -551,7 +580,16 @@ Polymer('mqtt-connection-ui', {
      * @type boolean
      * @default false
      */
-    narrow: false
+    narrow: false,
+
+    /**
+     *
+     *
+     * @attribute useWebsocketConnectionInChrome
+     * @type boolean
+     * @default false
+     */
+    useWebsocketConnectionInChrome: false
 
   },
 
@@ -561,21 +599,43 @@ Polymer('mqtt-connection-ui', {
    * #############
    */
   created: function () {
-    console.debug("created");
+//    console.debug("created");
   },
   ready: function () {
-    console.debug("ready");
+//    console.debug("ready");
     this.randomID();
-    this.connectionID = "lens_" + this.randomString(27)
+    this.connectionID = "lens_" + this.randomString(27);
+    this.tcpAvailable = this.checkForChromeAppRuntime();
+    if (this.tcpAvailable) {
+      this.hostPort = 1883;
+    }
+
   },
   attached: function () {
-    console.debug("attached");
+//    console.debug("attached");
   },
   domReady: function () {
-    console.debug("domReady");
+//    console.debug("domReady");
   },
   detached: function () {
-    console.debug("detached");
+//    console.debug("detached");
+  },
+
+  mqttProtocolChanged: function () {
+    if (this.mqttProtocol == "tcp"){
+      this.useWebsocketConnectionInChrome = true;
+    }
+
+    console.log("this.useWebsocketConnectionInChrome: %s", this.useWebsocketConnectionInChrome);
+
+  },
+
+  checkForChromeAppRuntime: function () {
+    if (window.chrome.runtime.reload) {
+      return true;
+    } else {
+      return false;
+    }
   },
 
 

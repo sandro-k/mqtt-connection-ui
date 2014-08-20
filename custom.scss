@@ -88,3 +88,18 @@ footer {
   }
 }
 
+.hostname-form {
+  label {
+    display: block!important;
+  }
+  select, input {
+    display: inline-block;
+  }
+  select {
+    width: 18%;
+  }
+  input {
+    width: 80%;
+  }
+}
+

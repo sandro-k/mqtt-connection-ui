@@ -69,3 +69,12 @@ footer {
     color: #ffffff;
     padding: 8px;
     font-weight: bold; }
+
+.hostname-form label {
+  display: block !important; }
+.hostname-form select, .hostname-form input {
+  display: inline-block; }
+.hostname-form select {
+  width: 18%; }
+.hostname-form input {
+  width: 80%; }
