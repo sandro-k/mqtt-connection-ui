@@ -607,6 +607,7 @@ Polymer('mqtt-connection-ui', {
     this.connectionID = "lens_" + this.randomString(27);
     this.tcpAvailable = this.checkForChromeAppRuntime();
     if (this.tcpAvailable) {
+      this.mqttProtocol = "tcp";
       this.hostPort = 1883;
     }
 
