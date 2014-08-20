@@ -688,6 +688,7 @@ Polymer('mqtt-connection-ui', {
    * Fires a `newMqttConnection` event
    */
   save: function () {
+    this.hostPort = parseInt(this.hostPort);
 
     if ( typeof this.connectionName != 'string'
         || this.connectionName.length <= 1
