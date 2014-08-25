@@ -629,7 +629,7 @@ Polymer('mqtt-connection-ui', {
   },
 
   checkForChromeAppRuntime: function () {
-    if (window.chrome.runtime.reload) {
+    if (window && window.chrome && window.chrome.runtime && window.chrome.runtime.reload) {
       return true;
     } else {
       return false;
