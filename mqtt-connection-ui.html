@@ -18,8 +18,8 @@
 <!-- _underscore -->
 <script src="../underscore/underscore.js"></script>
 
-
-<polymer-element name="mqtt-connection-ui" attributes="connectionName, keepAlive, autoConnect"
+27;
+<polymer-element name="mqtt-connection-ui" on-keypress="{{keypressAction}}"  attributes="connectionName, keepAlive, autoConnect"
                  constructor="MqttConnectionUi">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
@@ -583,6 +583,16 @@
          */
         useWebsocketConnectionInChrome: false
 
+      },
+
+      keypressAction: function(e, detail, sender) {
+        var ESC_KEY = 27;
+        console.log("key")
+        // Listen for enter on keypress but esc on keyup, because
+        // IE doesn't fire keyup for enter.
+        if (e.keyCode === ESC_KEY) {
+          this.close();
+        }
       },
 
       /**
