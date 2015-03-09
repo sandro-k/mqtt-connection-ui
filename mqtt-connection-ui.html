@@ -7,6 +7,7 @@
 <link rel="import" href="../core-item/core-item.html">
 <link rel="import" href="../polymer/layout.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../font-roboto/roboto.html">
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../paper-input/paper-input.html">
@@ -22,6 +23,7 @@
                  constructor="MqttConnectionUi">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
+
 
     <link rel="stylesheet" href="../mqtt-lens-style/mqtt-lens-style.css"/>
     <link rel="stylesheet" href="../mqtt-lens/mqtt-lens.css"/>
@@ -329,22 +331,22 @@
         <footer layout horizontal>
           <paper-button
               class="redbutton"
-              label="Cancel"
-              icon="delete"
-              raisedbutton
+              raised
               on-click="{{close}}">
+            <core-icon icon="delete"></core-icon>
+            Cancel
           </paper-button>
 
           <div flex><!--just a spacer--></div>
 
           <paper-button
               class="greenbutton"
-              label="Create connection"
-              icon="save"
               on-click="{{save}}"
               affirmative
               autofocus
-              raisedbutton>
+              raised>
+            <core-icon icon="save"></core-icon>
+            Create connection
           </paper-button>
         </footer>
       </template>
@@ -354,9 +356,10 @@
           <paper-button
               class="redbutton"
               label="Cancel"
-              icon="delete"
-              raisedbutton
+              raised
               on-click="{{close}}">
+            <core-icon icon="delete"></core-icon>
+            Cancel
           </paper-button>
 
           <div flex><!--just a spacer--></div>
@@ -364,12 +367,14 @@
           <paper-button
               class="greenbutton"
               label="Save changes"
-              icon="save"
               on-click="{{save}}"
               affirmative
               autofocus
-              raisedbutton>
+              raised>
+            <core-icon icon="save"></core-icon>
+            Save changes
           </paper-button>
+
         </footer>
       </template>
     </div>
@@ -501,7 +506,7 @@
         /**
          * The last will message that will be published at `lastWillTopic`
          * @attribute lastWillMessage
-         * @type  string
+         * @type string
          * @default ''
          */
         lastWillMessage: '',
@@ -509,7 +514,7 @@
         /**
          * The QoS the last will will be published with
          * @attribute lastWillQoS
-         * @type integer (0|1|2)
+         * @type number (0|1|2)
          * @default 0
          */
         lastWillQoS: 0,
@@ -585,8 +590,6 @@
        * Live cycle
        * #############
        */
-      created: function () {
-      },
 
       ready: function () {
         this.randomID();
@@ -596,15 +599,6 @@
           this.mqttProtocol = "tcp";
           this.hostPort = 1883;
         }
-
-      },
-      attached: function () {
-      },
-
-      domReady: function () {
-      },
-
-      detached: function () {
       },
 
       mqttProtocolChanged: function () {
