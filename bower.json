@@ -26,9 +26,9 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "~0.5.5",
+    "polymer": "Polymer/polymer#~0.5.5",
     "underscore": "~1.8.2",
-    "mqtt-lens-style": "sandro-k/mqtt-lens-style#master",
-    "changeover-icon": "sandro-k/changeover-icon#master"
+    "mqtt-lens-style": "sandro-k/mqtt-lens-style#~0.0.2",
+    "changeover-icon": "sandro-k/changeover-icon#~0.0.2"
   }
 }
