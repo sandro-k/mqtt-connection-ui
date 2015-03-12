@@ -7,7 +7,7 @@
 <link rel="import" href="../core-item/core-item.html">
 <link rel="import" href="../polymer/layout.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../font-roboto/roboto.html">
+<!--<link rel="import" href="../font-roboto/roboto.html">-->
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../paper-input/paper-input.html">
@@ -18,7 +18,6 @@
 <!-- _underscore -->
 <script src="../underscore/underscore.js"></script>
 
-27;
 <polymer-element name="mqtt-connection-ui" on-keypress="{{keypressAction}}"  attributes="connectionName, keepAlive, autoConnect"
                  constructor="MqttConnectionUi">
   <!-- outermost template defines the element's shadow DOM -->
@@ -40,7 +39,7 @@
 
     <div id="wrapper" class="{{{ narrow : narrow } | tokenList }}">
       <div class="modal-header">
-        <button type="button" class="close" on-click="{{close}}">&times;</button>
+        <button type="button" class="close" on-click="{{close}}"><core-icon icon="close"></core-icon></button>
         <h2 class="modal-title" id="newConnectionLabel">Add a new Connection</h2>
       </div>
       <div class="row" style="height: 3px; background: #443685; border-bottom: 1px dotted #FFFFFF;"></div>
@@ -587,7 +586,7 @@
 
       keypressAction: function(e, detail, sender) {
         var ESC_KEY = 27;
-        console.log("key")
+//        console.log("key")
         // Listen for enter on keypress but esc on keyup, because
         // IE doesn't fire keyup for enter.
         if (e.keyCode === ESC_KEY) {

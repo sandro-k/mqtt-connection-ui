@@ -21,7 +21,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "style.scss",
     "test",
     "tests"
   ],
