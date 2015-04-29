@@ -18,7 +18,9 @@
 <!-- _underscore -->
 <script src="../underscore/underscore.js"></script>
 
-<polymer-element name="mqtt-connection-ui" on-keypress="{{keypressAction}}"  attributes="connectionName, keepAlive, autoConnect"
+<polymer-element name="mqtt-connection-ui"
+                 on-keypress="{{keypressAction}}"
+                 attributes="connectionName, keepAlive, autoConnect"
                  constructor="MqttConnectionUi">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
@@ -39,7 +41,9 @@
 
     <div id="wrapper" class="{{{ narrow : narrow } | tokenList }}">
       <div class="modal-header">
-        <button type="button" class="close" on-click="{{close}}"><core-icon icon="close"></core-icon></button>
+        <button type="button" class="close" on-click="{{close}}">
+          <core-icon icon="close"></core-icon>
+        </button>
         <h2 class="modal-title" id="newConnectionLabel">Add a new Connection</h2>
       </div>
       <div class="row" style="height: 3px; background: #443685; border-bottom: 1px dotted #FFFFFF;"></div>
@@ -92,8 +96,8 @@
                          id="hostnameInput"
                          value="{{hostname}}"
                          placeholder="e.g. iot.eclipse.org" title=""
-                         disabled?="{{ mode == 'edit' }}"
                          data-original-title="Use any MQTT broker.">
+                         <!--disabled?="{{ mode == 'edit' }}"-->
                 </div>
 
               </div>
@@ -103,9 +107,9 @@
                   <input
                       class="form-control"
                       id="portInput"
-                      disabled?="{{ mode == 'edit' }}"
                       placeholder="Enter port number"
                       value="{{hostPort}}">
+                      <!--disabled?="{{ mode == 'edit' }}"-->
                 </div>
               </div>
             </div>
@@ -142,8 +146,8 @@
                       <input
                           checked="{{cleanSession}}"
                           id="cleanSessionInput"
-                          disabled?="{{ mode == 'edit' }}"
                           type="checkbox">
+                          <!--disabled?="{{ mode == 'edit' }}"-->
 
                       Clean Session
                     </label>
@@ -176,8 +180,8 @@
                       <input
                           id="autoConnectInput"
                           type="checkbox"
-                          disabled?="{{ mode == 'edit' }}"
                           checked="{{autoConnect}}">
+                          <!--disabled?="{{ mode == 'edit' }}"-->
                       Automatic Connection
                     </label>
                   </div>
@@ -311,8 +315,8 @@
                         <input
                             checked="{{lastWillRetained}}"
                             id="lastWillRetainInput"
-                            disabled
                             type="checkbox">
+                            <!--disabled-->
                         Retain
                       </label>
                     </div>
@@ -584,12 +588,12 @@
 
       },
 
-      keypressAction: function(e, detail, sender) {
+      keypressAction: function (e, detail, sender) {
         var ESC_KEY = 27;
 //        console.log("key")
         // Listen for enter on keypress but esc on keyup, because
         // IE doesn't fire keyup for enter.
-        if (e.keyCode === ESC_KEY) {
+        if(e.keyCode === ESC_KEY) {
           this.close();
         }
       },
@@ -604,20 +608,20 @@
         this.randomID();
         this.connectionID = "lens_" + this.randomString(27);
         this.tcpAvailable = this.checkForChromeAppRuntime();
-        if (this.tcpAvailable) {
+        if(this.tcpAvailable) {
           this.mqttProtocol = "tcp";
           this.hostPort = 1883;
         }
       },
 
       mqttProtocolChanged: function () {
-        if (this.mqttProtocol == "ws" && this.tcpAvailable) {
+        if(this.mqttProtocol == "ws" && this.tcpAvailable) {
           this.useWebsocketConnectionInChrome = true;
         }
       },
 
       checkForChromeAppRuntime: function () {
-        if (window && window.chrome && window.chrome.runtime && window.chrome.runtime.reload) {
+        if(window && window.chrome && window.chrome.runtime && window.chrome.runtime.reload) {
           return true;
         } else {
           return false;
@@ -653,7 +657,8 @@
        */
       load: function (values) {
         for (var property in this.publish) {
-          if (values[property]) {
+//          values.hasOwnProperty(property) &&
+          if(values[property]) {
             this[property] = values[property];
           }
         }
@@ -662,6 +667,8 @@
       close: function () {
         this.$.overlay.toggle();
         this.asyncFire('cancelNewMqttConnection');
+        this.asyncFire('mqtt-connection-cancel-new-mqttConnection');
+        this.asyncFire('mqttlens-connection-cancel-new-mqttConnection');
       },
 
       hideMessage: function () {
@@ -669,18 +676,17 @@
       },
 
       /**
-       * Fires a `newMqttConnection` event
+       * Fires a `mqttlens-new-mqtt-connection` event
        */
       save: function () {
         this.hostPort = parseInt(this.hostPort);
 
-        if (typeof this.connectionName != 'string'
+        if(typeof this.connectionName != 'string'
             || this.connectionName.length <= 1
             || typeof this.hostname != 'string'
             || this.hostname.length <= 1
             || typeof this.hostPort != 'number'
             || !(0 < this.hostPort < 65536)) {
-//      this.asyncFire('toast', {text: "Pleas enter a Connection name, a Hostname and Port to create a connection!", status: "error"});
           this.showMessage = true;
 
           this.myJob = this.job(this.myJob, this.hideMessage, 3000);
@@ -690,7 +696,11 @@
           for (var property in this.publish) {
             values[property] = this[property];
           }
-          this.asyncFire('newMqttConnection', values);
+
+          values["connectionEnabled"] = true;
+//          this.asyncFire('newMqttConnection', values);
+//          this.asyncFire('mqtt-connection-new-mqtt-connection', values);
+          this.asyncFire('mqttlens-new-mqtt-connection', values);
           this.$.overlay.toggle();
         }
       },
