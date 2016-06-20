@@ -88,7 +88,9 @@
                       disabled?="{{!tcpAvailable}}">
 
                     <option value="tcp">tcp://</option>
+                    <option value="mqtts">mqtts://</option>
                     <option value="ws">ws://</option>
+                    <option value="wss">wss://</option>
 
                   </select>
                   <input class="form-control"
@@ -615,7 +617,7 @@
       },
 
       mqttProtocolChanged: function () {
-        if(this.mqttProtocol == "ws" && this.tcpAvailable) {
+        if(this.mqttProtocol === "ws" && this.tcpAvailable) {
           this.useWebsocketConnectionInChrome = true;
         }
       },
