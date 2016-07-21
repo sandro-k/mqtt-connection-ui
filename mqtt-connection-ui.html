@@ -477,7 +477,6 @@
          */
         keepAlive: 120,
 
-
         /**
          * The username that is user to authenticate the connection with
          * @attribute username
@@ -677,11 +676,19 @@
         this.showMessage = false;
       },
 
+      _trimProperties: function(properties){
+        for (var i = -0; i < properties.length; i++){
+          this[properties[i]] = this[properties[i]].trim();
+        }
+      },
+
       /**
        * Fires a `mqttlens-new-mqtt-connection` event
        */
       save: function () {
         this.hostPort = parseInt(this.hostPort);
+
+        this._trimProperties(['hostname', 'connectionName', 'username', 'password', 'lastWillTopic', 'lastWillMessage']);
 
         if(typeof this.connectionName != 'string'
             || this.connectionName.length <= 1
